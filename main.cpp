@@ -49,3 +49,19 @@ public:
     }
 
 };
+
+
+class Person
+{
+private:
+    long key;
+    std::string last_name; //Фамилия
+    std::string first_name; //Имя
+public:
+    Person(); //Конструктор
+    Person(const Person&); //Конструктор
+    const std::string& getLastName() const { return last_name; }; //Получить фамилию, не описываем этот метод отдельно, т.к. достаточно простой
+    const std::string& getFirstName() const { return first_name; }; //Получить имя, не описываем этот метод отдельно, т.к. достаточно простой
+    void setLastName(const std::string&); //Изменить фамилию
+    void setFirstName(const std::string&); //Изменить имя
+};
