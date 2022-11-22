@@ -65,3 +65,27 @@ public:
     void setLastName(const std::string&); //Изменить фамилию
     void setFirstName(const std::string&); //Изменить имя
 };
+
+Person::Person()
+{
+    key = 1;
+    first_name = "NAME";
+    last_name = "SURNAME";
+}
+
+Person::Person(const Person& value)
+{
+    first_name = value.getFirstName(); //При создании экземпляра ласса копируем переданные значения имени и фамилии экземпляра этого же класса
+    last_name = value.getLastName();
+
+}
+
+void Person::setLastName(const std::string& value)
+{
+    last_name = value;
+}
+
+void Person::setFirstName(const std::string& value)
+{
+    first_name = value;
+}
