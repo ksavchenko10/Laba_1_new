@@ -122,6 +122,16 @@ STACK <Person>* PersonKeeper::readPersons(std::istream& stream) //чтение �
     std::string name, surname, patronymic;
     STACK <Person>* st; //создаем стек из экземпляров класса Person
     st = new STACK <Person>(); //создаем экземпляр класса Person
+    {
+        Person pers; //создаем экземпляр класса Person
+        pers.setFirstName(name); //Задаем имя
+        pers.setLastName(surname); //Задаем фамилию
+        std::cout << surname << " "; //выводим в консоль фамилию
+        std::cout << name << "\n"; //выводим в консоль имя
+        st->push(pers); //Добавляем экземляр класса Person в наш стек st
+    }
+
+    return st; //Возвращаем наш стек со всеми ФИО
 }
 
 int main(int argc, char *argv[])
