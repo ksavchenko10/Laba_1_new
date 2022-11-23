@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 
 template <typename T>
 
@@ -116,7 +117,12 @@ PersonKeeper* PersonKeeper::instance()  //Реализация паттерна 
     return singleton; //если экземпляр этого класса уже есть, отдаем его же... т.е. не возможно создать другой экземпляр этого класса, если мы попытаеся создать еще объект этого класса он вернет уже существующий
 }
 
-
+STACK <Person>* PersonKeeper::readPersons(std::istream& stream) //чтение из файла
+{
+    std::string name, surname, patronymic;
+    STACK <Person>* st; //создаем стек из экземпляров класса Person
+    st = new STACK <Person>(); //создаем экземпляр класса Person
+}
 
 int main(int argc, char *argv[])
 {
