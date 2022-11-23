@@ -92,6 +92,31 @@ void Person::setFirstName(const std::string& value)
     first_name = value;
 }
 
+class PersonKeeper //класс для работы со стеком
+{
+
+public:
+    static PersonKeeper* instance(); //создаем либо возвращаем экземпляр нашего класса-синглтон
+    STACK <Person>* readPersons(std::istream& stream); //метод чтения данных из файла и возвращения стека
+    void writePersons(STACK <Person> a, std::ostream& stream); //запись данных в файл
+
+private:
+    static PersonKeeper* singleton; //переменная которая хранит наш экземпляр класса-синглтона
+};
+
+PersonKeeper* PersonKeeper::singleton = NULL; //изначально экземпляр класса равен NULL, пока не будет объявлен
+
+PersonKeeper* PersonKeeper::instance()  //Реализация паттерна Singleton
+{
+    if (singleton == NULL) //если экземпляра этого класса еще нет, то создаем его
+    {
+        singleton = new PersonKeeper;
+    }
+
+    return singleton; //если экземпляр этого класса уже есть, отдаем его же... т.е. не возможно создать другой экземпляр этого класса, если мы попытаеся создать еще объект этого класса он вернет уже существующий
+}
+
+
 
 int main(int argc, char *argv[])
 {
