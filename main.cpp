@@ -134,6 +134,16 @@ STACK <Person>* PersonKeeper::readPersons(std::istream& stream) //чтение �
     return st; //Возвращаем наш стек со всеми ФИО
 }
 
+void PersonKeeper::writePersons(STACK <Person> a, std::ostream& stream) //запись стека с именами и фамилиями в файл, передаем стек с данными и поток вывода
+{
+    while (!(a.IsEmpty())) //если стек еще не пуст, проходим дальше
+    {
+        Person p = a.pop(); //берем из стека верхний элемент
+        stream << p.getFirstName() <<  p.getLastName(); //выводим в поток имя и фамилию
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
