@@ -58,15 +58,18 @@ class Person
 {
 private:
     long key;
-    std::string last_name; //Фамилия
-    std::string first_name; //Имя
+    std::string last_name; //Имя
+    std::string first_name; //Фамилия
+    std::string patronymic; //Отчество
 public:
     Person(); //Конструктор
     Person(const Person&); //Конструктор
-    const std::string& getLastName() const { return last_name; }; //Получить фамилию, не описываем этот метод отдельно, т.к. достаточно простой
-    const std::string& getFirstName() const { return first_name; }; //Получить имя, не описываем этот метод отдельно, т.к. достаточно простой
-    void setLastName(const std::string&); //Изменить фамилию
-    void setFirstName(const std::string&); //Изменить имя
+    const std::string& getLastName() const { return last_name; }; //Получить фамилию
+    const std::string& getFirstName() const { return first_name; }; //Получить имя
+    const std::string& getPatronymic() const { return patronymic; }; //Получить отчество
+    void setLastName(const std::string&); //Присвоить фамилию
+    void setFirstName(const std::string&); //Присвоить имя
+    void setPatronymic(const std::string&); //Присвоить отчество
 };
 
 Person::Person()
@@ -74,12 +77,14 @@ Person::Person()
     key = 1;
     first_name = "NAME";
     last_name = "SURNAME";
+    patronymic = "";
 }
 
 Person::Person(const Person& value)
 {
     first_name = value.getFirstName(); //При создании экземпляра ласса копируем переданные значения имени и фамилии экземпляра этого же класса
     last_name = value.getLastName();
+    patronymic = value.getPatronymic();
 
 }
 
@@ -91,6 +96,11 @@ void Person::setLastName(const std::string& value)
 void Person::setFirstName(const std::string& value)
 {
     first_name = value;
+}
+
+void Person::setPatronymic(const std::string& value)
+{
+    patronymic = value; //задаем отчество
 }
 
 class PersonKeeper //класс для работы со стеком
@@ -127,9 +137,8 @@ STACK <Person>* PersonKeeper::readPersons(std::istream& stream) //чтение �
         Person pers; //создаем экземпляр класса Person
         pers.setFirstName(name); //Задаем имя
         pers.setLastName(surname); //Задаем фамилию
-        std::cout << surname << " "; //выводим в консоль фамилию
-        std::cout << name << " "; //выводим в консоль имя
-        std::cout << patronymic << "\n"; //выводим фамилию
+        pers.setPatronymic(patronymic); //Задаем отчество
+        std::cout << surname << " " << name << " " << patronymic << "\n"; //выводим в консоль фамилию, имя, отчество
         st->push(pers); //Добавляем экземляр класса Person в наш стек st
     }
 
@@ -141,7 +150,7 @@ void PersonKeeper::writePersons(STACK <Person> a, std::ostream& stream) //зап
     while (!(a.IsEmpty())) //если стек еще не пуст, проходим дальше
     {
         Person p = a.pop(); //берем из стека верхний элемент
-        stream << p.getFirstName() <<  p.getLastName(); //выводим в поток имя и фамилию
+        stream << p.getFirstName() << " " << p.getLastName() << " " << p.getPatronymic() << '\n'; //выводим в поток ФИО
     }
 }
 
@@ -155,17 +164,35 @@ int main(int argc, char *argv[])
         std::fstream file_in; //создаем объект file_in типа fstream, для работы с файлами. fstream - стандартная библиотека для работы с файлами
         file_in.open("vvod.txt"); // открываем файл для чтения (или записи, но в данном случае мы будем считывать), используя стандартный метод библиотеки open
 
-        STACK <Person> st;	//создаем стэк из элементов стека класса Person.
-        st = *personKeeperInstance.readPersons(file_in); // метод readPersons возвращает стек с объектами класса Person. При этом мы используем экземпляр класса personKeeperInstance, который мы создали для нашей задачи и сделали там нужные методы... т.е. сделали что-то вроде библиотеки с готовыми методами
+        if (file_in) //если файл существует и открылся
+        {
+            std::cout << "File has been opened!" << '\n'; //вывод в консоль об успешности открытия
 
-        file_in.close(); //закрывает поток file_in чтения из файла
+            STACK <Person> st;	//создаем стэк из элементов стека класса Person.
+            st = *personKeeperInstance.readPersons(file_in); // метод readPersons возвращает стек с объектами класса Person. При этом мы используем экземпляр класса personKeeperInstance, который мы создали для нашей задачи и сделали там нужные методы... т.е. сделали что-то вроде библиотеки с готовыми методами
 
-        std::fstream file_out; //создаем объект file_out типа fstream, для работы с файлами
-        file_out.open("vyvod.txt"); //открываем файл для записи
+            file_in.close(); //закрывает поток file_in чтения из файла
 
-        personKeeperInstance.writePersons(st, file_out); //записываем в файл данные из стека st в файл file_out, при этом используем наш экземпляр класса personKeeperInstance с нужным методом для записи
+            std::ofstream file_out; //создаем объект file_out типа fstream, для работы с файлами
+            file_out.open("vyvod.txt"); //открываем файл для записи
 
-        file_out.close(); ////закрывает поток file_out
+            if (file_out)
+            {
+                 personKeeperInstance.writePersons(st, file_out); //записываем в файл данные из стека st в файл file_out, при этом используем наш экземпляр класса personKeeperInstance с нужным методом для записи
+
+                 file_out.close(); //закрывает поток file_out
+            }
+            else
+            {
+                  std::cout << "Error creating output file!" << '\n';
+            }
+
+        }
+        else
+        {
+            std::cout << "Input file not found!" << '\n';
+        }
+
 
     return a.exec();
 }
