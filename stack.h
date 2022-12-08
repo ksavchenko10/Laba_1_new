@@ -27,6 +27,7 @@ public:
     void push(T value); //добавить элемент в стек
     T pop(); // изъять элемент из стека
     bool IsEmpty(); //проверяет пуст ли стек
+    int countNode(); //возвращает количество элементов в стеке
 };
 
 template<typename T>
@@ -88,5 +89,10 @@ bool Stack<T>::IsEmpty() //пусть ли стек
     return count == 0; // если размер стека пуст
 }
 
+template<typename T>
+int Stack<T>::countNode() //возвращает количество элементов в стеке
+{
+    return count; //  размер стека
+}
 
 #endif // STACK_H

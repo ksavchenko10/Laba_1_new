@@ -44,7 +44,21 @@ int main(int argc, char *argv[])
         {
             std::cout << "Input file not found!" << '\n';
         }
+/*
+Stack <int> st;
+    st.push(5);
+    st.push(7);
+    st.push(13);
+    st.push(27);
 
+int top = st.pop();
+    std::cout << top  << '\n';
+
+top = st.pop();
+    std::cout << top  << '\n';
+
+std::cout << st.countNode()  << '\n';
+*/
 
     return a.exec();
 }
