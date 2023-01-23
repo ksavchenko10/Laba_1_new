@@ -4,17 +4,6 @@
 #include <iostream>
 #include <string>
 
-PersonKeeper* PersonKeeper::singleton = NULL; //изначально экземпляр класса равен NULL, пока не будет объявлен
-
-PersonKeeper* PersonKeeper::instance()  //Реализация паттерна Singleton
-{
-    if (singleton == NULL) //если экземпляра этого класса еще нет, то создаем его
-    {
-        singleton = new PersonKeeper;
-    }
-
-    return singleton; //если экземпляр этого класса уже есть, отдаем его же
-}
 
 Stack <Person>* PersonKeeper::readPersons(std::istream& stream) //чтение из файла
 {

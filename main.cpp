@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    PersonKeeper personKeeperInstance;	//создаем экземпляр класса personKeeperInstance
+  PersonKeeper& instance = PersonKeeper::Instance(); //создаем экземпляр класса personKeeperInstance
 
         std::fstream file_in; //создаем объект file_in типа fstream, для работы с файлами. fstream - стандартная библиотека для работы с файлами
         file_in.open("vvod.txt"); // открываем файл для чтения (или записи, но в данном случае мы будем считывать), используя стандартный метод библиотеки open
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
             std::cout << "File has been opened!" << '\n'; //вывод в консоль об успешности открытия
 
             Stack <Person> st;	//создаем стэк из элементов стека класса Person.
-            st = *personKeeperInstance.readPersons(file_in); // метод readPersons возвращает стек с объектами класса Person. При этом мы используем экземпляр класса personKeeperInstance, который мы создали для нашей задачи и сделали там нужные методы... т.е. сделали что-то вроде библиотеки с готовыми методами
+            st = *PersonKeeper::Instance().readPersons(file_in); // метод readPersons возвращает стек с объектами класса Person. При этом мы используем экземпляр класса personKeeperInstance, который мы создали для нашей задачи и сделали там нужные методы... т.е. сделали что-то вроде библиотеки с готовыми методами
 
             file_in.close(); //закрывает поток file_in чтения из файла
 
@@ -30,21 +30,21 @@ int main(int argc, char *argv[])
 
             if (file_out)
             {
-                 personKeeperInstance.writePersons(st, file_out); //записываем в файл данные из стека st в файл file_out, при этом используем наш экземпляр класса personKeeperInstance с нужным методом для записи
+                 PersonKeeper::Instance().writePersons(st, file_out); //записываем в файл данные из стека st в файл file_out, при этом используем наш экземпляр класса personKeeperInstance с нужным методом для записи
 
                  file_out.close(); //закрывает поток file_out
             }
             else
             {
-                  std::cout << "Error creating output file!" << '\n';
+                  std::cout << "Error creating output file!" << '\n'; // ошибка создания выходного файла
             }
 
         }
         else
         {
-            std::cout << "Input file not found!" << '\n';
+            std::cout << "Input file not found!" << '\n'; // входной файл не найден
         }
-/*
+ /*
 Stack <int> st;
     st.push(5);
     st.push(7);

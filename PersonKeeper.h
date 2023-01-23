@@ -7,12 +7,20 @@ class PersonKeeper //класс для работы со стеком
 {
 
 public:
-    static PersonKeeper* instance(); //создаем либо возвращаем экземпляр нашего класса-синглтон
-    Stack <Person>* readPersons(std::istream& stream); //метод чтения данных из файла и возвращения стека
-    void writePersons(Stack <Person> value, std::ostream& stream); //запись данных в файл
+    static PersonKeeper& Instance() //синглтон
+        {
+            static PersonKeeper s;
+            return s;
+        }
 
-private:
-    static PersonKeeper* singleton; //переменная которая хранит наш экземпляр класса-синглтона
+        void writePersons(Stack <Person> value, std::ostream& stream); //запись данных в файл
+        Stack <Person>* readPersons(std::istream& stream); //метод чтения данных из файла и возвращения стека
+
+    private:
+        PersonKeeper() {}; //конструктор
+        ~PersonKeeper() {}; //деструктор
+        PersonKeeper(PersonKeeper const&); //запрещено копирование
+        PersonKeeper& operator= (PersonKeeper const&); //запрещено копирование
 };
 
 #endif // PERSONKEEPER_H
