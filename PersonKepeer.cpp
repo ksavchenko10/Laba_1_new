@@ -10,7 +10,7 @@ Stack <Person>* PersonKeeper::readPersons(std::istream& stream) //чтение �
     std::string name, surname, patronymic;
     Stack <Person>* st; //создаем стек из экземпляров класса Person
     st = new Stack <Person>();
-    while (stream >> name >> surname >> patronymic) //пока в потоке stream будут данные для чтения (3 строковых: имя фамилия отчество)
+    while (stream >> surname >> name >> patronymic) //пока в потоке stream будут данные для чтения (3 строковых: имя фамилия отчество)
     {
         Person pers; //создаем экземпляр класса Person
         pers.setFirstName(name); //Задаем имя
@@ -23,12 +23,16 @@ Stack <Person>* PersonKeeper::readPersons(std::istream& stream) //чтение �
     return st; //Возвращаем наш стек
 }
 
-void PersonKeeper::writePersons(Stack <Person> value, std::ostream& stream) //запись стека с именами и фамилиями в файл, передаем стек с данными и поток вывода
+void PersonKeeper::writePersons(const Stack<Person>& value, std::ostream& stream) //запись стека с ФИО в файл, передаем стек с данными и поток вывода
 {
-    Stack <Person> st(value); //создаем стек их входящего стека (копируем стек)
-    while (!(st.IsEmpty())) //если стек еще не пуст, проходим дальше
+    Stack<Person> st(value); //создаем стек их входящего стека (копируем стек)
+    while (st.countNode() != 0) //если стек еще не пуст, проходим дальше
     {
-        Person p = st.pop(); //берем из стека верхний элемент
-        stream << p.getFirstName() << " " << p.getLastName() << " " << p.getPatronymic() << '\n'; //выводим в поток имя и фамилию
+        try {
+            Person p = st.pop(); //берем из стека верхний элемент
+            stream << p.getFirstName() << " " << p.getLastName() << " " << p.getPatronymic() << '\n'; //выводим в поток ФИО
+        } catch (EStackEmpty)  {
+            std::cerr << "Error. Stack is empty, it is not posible to remove an element using the pop method." << std::endl;
+        }
     }
 }

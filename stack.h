@@ -1,8 +1,13 @@
 #ifndef STACK_H
 #define STACK_H
+#include <iostream>
+#include <windows.h>
+
+class EStackException: public std::exception {};
+
+class EStackEmpty: public EStackException {};
 
 template<typename T>
-
 class Stack
 {
 private:
@@ -12,81 +17,65 @@ private:
         T value; // значение
         Node* next_node; // указатель на следующий элемент стека
 
-        Node(T val, Node* next_node) //конструктор
+        Node(T val, Node* node) //конструктор
         {
-            this->value = val; //задаем значение элемента стека
-            this->next_node = next_node; //задаем указатель на следующий элементе стека
+            value = val; //задаем значение элемента стека
+            next_node = node; //задаем указатель на следующий элементе стека
         }
     };
-    Node* top_node = nullptr; // указатель на вершину стека
-    int count = 0; // размер стека
+    Node* top_node; // указатель на вершину стека
+    int count; // размер стека
 
 public:
     Stack<T>(); //конструктор
-    Stack<T>(const Stack<T>& stack); //конструктора копирования
+    Stack<T>(const Stack<T>& stack); //конструктор копирвания
     void push(T value); //добавить элемент в стек
     T pop(); // изъять элемент из стека
-    bool IsEmpty(); //проверяет пуст ли стек
     int countNode(); //возвращает количество элементов в стеке
 };
 
 template<typename T>
-
-Stack<T>::Stack() //конструктора
+Stack<T>::Stack()//конструктора
 {
+    top_node = nullptr; // указатель на вершину стека
+    count = 0; // размер стека
 }
 
 template<typename T>
-Stack<T>::Stack(const Stack<T> &stack) //конструктора копирования
+Stack<T>::Stack(const Stack<T>& stack)
 {
-    if (stack.count == 0) //если стек для копирования пустой
-    {
-        return; //выходим
-    }
-
-    Node *node = stack.top_node; //выбираем вершину стека
-    for (int i = 0; i < stack.count; i++) //обход стека
-    {
-        this->push(node->value); //добавляем элемент стека в наш новый стек
-        node = node->next_node; //переходим к следующему элементу в стеке
+    top_node = nullptr;
+    count = 0;
+    Node* currNode = stack.top_node; //
+    while (currNode != nullptr) {
+        push(currNode->value);
+        currNode = currNode->next_node;
     }
 }
 
 template<typename T>
-
 void Stack<T>::push(T value) //добавляем новый элемент в стек
 {
-    if (top_node == nullptr) // если вершина не существует
+    top_node = new Node(value, top_node); //создаём новую вершину
+    count++; //увеличивается размер стека
+}
+
+template<typename T>
+T Stack<T>::pop() //удаление вершины стека, возвращаем при этом удаляемую вершину
+{
+    if (top_node == nullptr)
     {
-        top_node = new Node(value, nullptr); // то создаём новую вершину
+        throw EStackEmpty();
     }
     else
     {
-        Node* last_top_node = top_node; // если вершина существует то запоминаем ее
-        top_node = new Node(value, last_top_node); // создаем новый элемент стека
-        //и передаем в конструктор значение нового элемента и ссылку на следующий элемент стека
+        Node* new_top_node = top_node->next_node; //запоминается следующий элемент после вершины
+        T result = top_node->value; //запоминаем значение текущей вершины стека
+        delete top_node; //удаляем память текущей вершины стека
+        top_node = new_top_node; //задаем новой вершиной следующий элемент стека
+        count--; //уменьшаем размер стек
+        return result; //возвращаем значение которое было в вершине стека
     }
-
-    count++; //увеличивается размер стека, т.к. добавился новый элемент
-}
-
-template<typename T>
-
-T Stack<T>::pop() //удаление вершины стека, возвращаем при этом удаляемую вершину
-{
-    Node* new_top_node = top_node->next_node; // запоминается следующий элемент после вершины
-    T result = top_node->value; // запоминаем значение текущей вершины стека
-    delete top_node; //удаляем память текущей вершины стека
-    top_node = new_top_node; //задаем новой вершиной следующий элемент стека
-    count--; // уменьшаем размер стека, т.к. один элемент был удален
-    return result; // возвращаем значение которое было в вершине стека
-}
-
-template<typename T>
-
-bool Stack<T>::IsEmpty() //пусть ли стек
-{
-    return count == 0; // если размер стека пуст
 }
 
 template<typename T>

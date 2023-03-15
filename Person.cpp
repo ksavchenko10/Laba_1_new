@@ -9,7 +9,7 @@ Person::Person() //конструкток без параметров
 
 Person::Person(const Person& value) //конструтор копирования экземпляра Person
 {
-    first_name = value.getFirstName(); //При создании экземпляра класса копируем переданные значения имени,  фамилии и отчества экземпляра этого же класса
+    first_name = value.getFirstName(); //При создании экземпляра класса копируем переданные значения ФИО экземпляра этого же класса
     last_name = value.getLastName();
     patronymic = value.getPatronymic();
 }
