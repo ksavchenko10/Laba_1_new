@@ -21,6 +21,8 @@ int main(int argc, char *argv[])
         Stack<Person> st;	//создаем стэк из элементов стека класса Person.
         st = *PersonKeeper::Instance().readPersons(file_in); // метод readPersons возвращает стек с объектами класса Person.
 
+        std::cout << "File has been readed!" << '\n';
+
         file_in.close(); //закрывает поток file_in чтения из файла
 
         std::ofstream file_out; //создаем объект file_out типа fstream, для работы с файлами
@@ -37,6 +39,8 @@ int main(int argc, char *argv[])
         {
               std::cout << "Error creating output file!" << '\n'; // ошибка создания выходного файла
         }
+
+        std::cout << "Finished!" << '\n';
 
     }
     else
